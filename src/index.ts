@@ -1,7 +1,15 @@
-const numArray: number[] = [1, 2, 3];
+import { readFile } from "fs";
 
-for (let value of numArray) console.log(value);
+const readFilePromise = (filePath: string): Promise<string> =>
+  new Promise<string>((resolve, reject) => {
+    readFile(filePath, (error: any, buffer: Buffer) => {
+      if (error) reject(error.message);
+      else resolve(buffer.toString());
+    });
+  });
 
-const strArray: string[] = ["heelo", "world", "!"];
-
-for (let value of strArray) console.log(value);
+(async () => {
+  const content = await readFilePromise("./package.json");
+  console.log("read file...");
+  console.log(content);
+})();
